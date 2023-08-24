@@ -17,7 +17,7 @@ import bahttext "github.com/martsodchun/go-bahttext"
 amount := "5,555.55 บาท"
 fmt.Printf("%s => %s\n", amount, bahttext.ConvertToText(amount))
 
-=> "ห้าพันห้าร้อยห้าสิบห้าบาทห้าสิบห้าสตางค์"
+5,555.55 บาท => "ห้าพันห้าร้อยห้าสิบห้าบาทห้าสิบห้าสตางค์"
 ```
 
 ## License
