@@ -72,7 +72,7 @@ func convertDecimalPart(decimalPart string) string {
 func ConvertToText(amount string) string {
 	parts := strings.Split(cleanInput(amount), ".")
 	if len(parts) > 2 {
-		return "ทศนิยมหลายตัวนะจ๊ะ"
+		return "error"
 	}
 
 	intText := convertIntegerPart(parts[0])
