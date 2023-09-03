@@ -19,28 +19,45 @@ func cleanInput(amount string) string {
 }
 
 func convertIntegerPart(intPart string) string {
-	var result string
-	for i := 0; i < len(intPart); i++ {
-		digit := int(intPart[i] - '0')
-		if digit != 0 {
-			if i == len(intPart)-1 && digit == 1 {
-				result += "เอ็ด"
-			} else if i == len(intPart)-2 && digit == 2 {
-				result += "ยี่"
-			} else if i == len(intPart)-2 && digit == 1 {
-				result += ""
-			} else {
-				result += units[digit]
-			}
-			result += positions[len(intPart)-i-1]
+	sliceStr := strings.Split(intPart, "")
+	resultSet := make([]string, len(sliceStr)/6+1)
+	sets := make([]string, len(sliceStr)/6+1)
+	setI := len(sets) - 1
+	i := 0
+
+	for j := len(sliceStr) - 1; j >= 0; j-- {
+		sets[setI] = sliceStr[j] + sets[setI]
+		i++
+		if i >= 6 {
+			i = 0
+			setI--
 		}
 	}
 
-	if result == "เอ็ด" {
-		return "หนึ่ง"
-	}
+	for i, set := range sets {
+		for j := 0; j < len(set); j++ {
+			digit := int(set[j] - '0')
+			if digit != 0 {
+				if j == len(set)-1 && digit == 1 {
+					resultSet[i] += "เอ็ด"
+				} else if j == len(set)-2 && digit == 2 {
+					resultSet[i] += "ยี่"
+				} else if j == len(set)-2 && digit == 1 {
+					resultSet[i] += ""
+				} else {
+					resultSet[i] += units[digit]
+				}
+				resultSet[i] += positions[len(set)-j-1]
+			}
+		}
 
-	return result
+		if resultSet[0] == "เอ็ด" && len(resultSet) == 1 {
+			resultSet[0] = "หนึ่ง"
+		}
+	}
+	strResult := strings.Join(resultSet[:], "ล้าน")
+
+	return strResult
 }
 
 func convertDecimalPart(decimalPart string) string {

@@ -25,6 +25,28 @@ fmt.Printf("%s => %s\n", sAmount, sResult)
 
 5,555.55 บาท => "ห้าพันห้าร้อยห้าสิบห้าบาทห้าสิบห้าสตางค์"
 
+sAmount := "5,555.55"
+sResult, err := bahttext.ConvertToText(sAmount)
+
+if err != nil {
+  panic(err)
+}
+
+fmt.Printf("%s => %s\n", sAmount, sResult)
+
+5,555.55 => "ห้าพันห้าร้อยห้าสิบห้าบาทห้าสิบห้าสตางค์"
+
+sAmount := "456123112345678.55"
+sResult, err := bahttext.ConvertToText(sAmount)
+
+if err != nil {
+  panic(err)
+}
+
+fmt.Printf("%s => %s\n", sAmount, sResult)
+
+456123112345678.55 => "สี่ร้อยห้าสิบหกล้านหนึ่งแสนสองหมื่นสามพันหนึ่งร้อยสิบสองล้านสามแสนสี่หมื่นห้าพันหกร้อยเจ็ดสิบแปดบาทห้าสิบห้าสตางค์"
+
 fAmount := 777.77
 fResult, err := bahttext.ConvertFloatToText(fAmount)
 
