@@ -1,6 +1,9 @@
 package go_bahttext
 
 import (
+	"errors"
+	"fmt"
+	"regexp"
 	"strings"
 )
 
@@ -69,17 +72,32 @@ func convertDecimalPart(decimalPart string) string {
 	return result + "สตางค์"
 }
 
-func ConvertToText(amount string) string {
-	parts := strings.Split(cleanInput(amount), ".")
-	if len(parts) > 2 {
-		return "error"
+func ConvertToText(amount string) (string, error) {
+	cleanAmount := cleanInput(amount)
+	if !isValidNumber(cleanAmount) {
+		return "", errors.New("Wrong Format")
 	}
 
-	intText := convertIntegerPart(parts[0])
-	decText := convertDecimalPart(parts[1])
+	return converting(cleanAmount)
+}
+
+func ConvertFloatToText(famount float64) (string, error) {
+	cleanAmount := fmt.Sprintf("%f", famount)
+	return converting(cleanAmount)
+}
+
+func converting(cleanAmount string) (string, error) {
+	bahtPart, satangPart := splitInto2(fmt.Sprintf("%s", cleanAmount))
+
+	if len(satangPart) > 2 {
+		return "", errors.New("Decimal point more than 2 point")
+	}
+
+	intText := convertIntegerPart(bahtPart)
+	decText := convertDecimalPart(satangPart)
 
 	if intText == "" && decText == "ถ้วน" {
-		return "ศูนย์บาทถ้วน"
+		return "ศูนย์บาทถ้วน", nil
 	}
 
 	if intText == "" {
@@ -87,5 +105,26 @@ func ConvertToText(amount string) string {
 	}
 
 	wordRepresentation := intText + "บาท" + decText
-	return wordRepresentation
+	return wordRepresentation, nil
+}
+
+func splitInto2(s string) (string, string) {
+	index := strings.Index(s, ".")
+	if index == -1 {
+		return s, ""
+	}
+
+	sPart := strings.TrimRight(s[index+1:], "0")
+	if len(sPart) == 1 {
+		sPart += "0"
+	}
+	return s[:index], sPart
+}
+
+func isValidNumber(s string) bool {
+	pattern := `^\d*\.?\d*$`
+
+	matched, _ := regexp.MatchString(pattern, s)
+
+	return matched
 }

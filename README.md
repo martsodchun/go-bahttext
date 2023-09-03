@@ -14,10 +14,28 @@ A Go library to convert numeric values to Thai word representations.
 ```go
 import bahttext "github.com/martsodchun/go-bahttext"
 
-amount := "5,555.55 บาท"
-fmt.Printf("%s => %s\n", amount, bahttext.ConvertToText(amount))
+sAmount := "5,555.55 บาท"
+sResult, err := bahttext.ConvertToText(sAmount)
+
+if err != nil {
+  panic(err)
+}
+
+fmt.Printf("%s => %s\n", sAmount, sResult)
 
 5,555.55 บาท => "ห้าพันห้าร้อยห้าสิบห้าบาทห้าสิบห้าสตางค์"
+
+fAmount := 777.77
+fResult, err := bahttext.ConvertFloatToText(fAmount)
+
+if err != nil {
+  panic(err)
+}
+
+fmt.Printf("%f => %s\n", fAmount, fResult)
+
+777.77 => "เจ็ดร้อยเจ็ดสิบเจ็ดบาทเจ็ดสิบเจ็ดสตางค์"
+
 ```
 
 ## License
